@@ -1,9 +1,11 @@
+var GLOBAL_SIZE = 3;
+
 $('#create').mousedown(function(e) {
 	createRandomPool();
 });
 
 $('#train1').mousedown(function(e) {
-	train("neat");
+	train();
 });
 
 $('#identify').mousedown(function(e) {
@@ -45,7 +47,7 @@ function createRandomPool() {
 	document.getElementById("notification2").innerHTML = "Constructing a random pool. Please wait...";
 	var xmlhttp = new XMLHttpRequest(); // new HttpRequest
 	// instance
-	xmlhttp.open("POST", "/neat");
+	xmlhttp.open("POST", "/pool?size="+GLOBAL_SIZE);
 	xmlhttp.setRequestHeader("Content-Type", "application/json");
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -57,7 +59,7 @@ function createRandomPool() {
 	xmlhttp.send();
 }
 
-function train(type) {
+function train() {
 	if (document.getElementById("train4").checked) {
 		document.getElementById("train1").disabled = true;
 	}
@@ -65,7 +67,7 @@ function train(type) {
 	document.getElementById("notification2").innerHTML = "Stepping forward a generation. Please wait...";
 	var xmlhttp = new XMLHttpRequest(); // new HttpRequest
 	// instance
-	xmlhttp.open("PUT", "/" + type);
+	xmlhttp.open("PUT", "/pool");
 	xmlhttp.setRequestHeader("Content-Type", "application/json");
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -82,7 +84,7 @@ function train(type) {
 	xmlhttp.send();
 }
 
-document.getElementById("notification3").addEventListener('doAgain', function(){ train("neat"); });
+document.getElementById("notification3").addEventListener('doAgain', function(){ train(); });
 
 function printGenomes(jsonResponse) {
 	document.getElementById("result").innerHTML = "";
